@@ -1,9 +1,15 @@
-const express = require('express')
-const { 
-    getAllDonutsController
-  } = require('../controllers/listaDonutsController')
-const router = express.Router()
+import express from 'express';
+import { getAllDonutsController, crearDonutsController, deleteDonutController } from '../controllers/listaDonutsController.js';
 
-router.get('/', getAllDonutsController)
+const router = express.Router();
 
-module.exports = router
+router.get('/', getAllDonutsController);
+router.post('/', crearDonutsController);
+router.delete("/:id", deleteDonutController);
+
+
+export default router; 
+
+
+
+

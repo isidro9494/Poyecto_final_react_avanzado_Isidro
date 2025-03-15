@@ -1,40 +1,39 @@
-import React, { useEffect } from 'react'
-import { loadDonuts } from '../components/listaDonuts/ListaDonutsAction'
-import { getDonut } from '../core/services/listDonutFetch'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useState, useEffect } from 'react'
+import ListaDonutsComponent from '../components/listaDonuts/ListaDonutsComponent';
+import DetalleDonut from '../components/DetalleDonut/DetalleDonut';
+import EditarDonut from '../components/EditarDonut/EditarDonut';
 
 const ListadoDonuts = () => {
-    const {
-        donuts
-    } = useSelector(state => state.listaDonutsReducer)
-    const dispatch = useDispatch()
-    const loadDonutsList = async () => {
-        const donutsList = await getDonut()
-        dispatch(
-            loadDonuts(donutsList)
-        )
+  const [view, setView] = useState('list');
+  const [donut, setDonut] = useState(null);
+
+  const handleDetail = (donut) => {
+    console.log(donut);
+    if (donut) {
+        setDonut(donut);
+        setView('detail');
+    } else {
+      console.log("El donut recibido es undefined o null");
     }
-    useEffect(()=>{
-        loadDonutsList()
-    })
+};
+
+
+  const handleEdit = () => {
+      setView('edit');
+  };
+
+  const handleBack = () => {
+      setView('list');
+      setDonut(null);
+  };
+
   return (
     <div>
-        <h1>Listado de Donuts</h1>
-        <div>
-
-        {donuts && donuts.length > 0 ? (
-          donuts.map((donut) => (
-            <li key={donut.id}>
-              ID: {donut.id}, Nombre: {donut.nombre}
-              <button onClick={() => handleDetail(donut)}>Ver Detalles</button>
-            </li>
-          ))
-        ) : (
-          <span>... loading</span>
-        )}
-        </div>
-    </div>
-  )
-}
+      {view === 'list' && <ListaDonutsComponent onDetail={handleDetail} />}
+       {view === 'detail' &&  donut &&<DetalleDonut donut={donut} onBack={handleBack} onEdit={handleEdit} />}
+       {view === 'edit' && <EditarDonut donut={donut} onCancel={handleBack} />}
+  </div>
+  );
+};
 
 export default ListadoDonuts

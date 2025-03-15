@@ -1,5 +1,6 @@
 
 export const ADD_DONUT ="ADD_DONUT"
+export const LOAD_DONUTS = "LOAD_DONUTS";
 
 export const anadirDonut = (donut)=>{
     return{
@@ -7,3 +8,9 @@ export const anadirDonut = (donut)=>{
         payload:donut
     }
 }
+export const loadDonuts = (donuts) => {
+    return {
+      type: LOAD_DONUTS,
+      payload: donuts,
+    };
+  };

@@ -1,9 +1,11 @@
-import { LOAD_DONUTS } from "../listaDonuts/ListaDonutsAction";
+import { LOAD_DONUTS, SET_SELECTION } from "../listaDonuts/ListaDonutsAction";
 
 
 
 const initialState ={
-    donuts:undefined
+    donuts:[],
+    selectDon:null
+
 }
 
 const listaDonutsReducer = (state = initialState,action)=>{
@@ -11,6 +13,12 @@ const listaDonutsReducer = (state = initialState,action)=>{
         return{
             ...state,
             donuts:action.payload
+        }
+    
+    }    if(action.type === SET_SELECTION){
+        return{
+            ...state,
+            selectDon:action.payload
         }
     }else{
         return state
