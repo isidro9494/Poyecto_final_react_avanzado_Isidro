@@ -1,4 +1,4 @@
-import { ADD_DONUT } from "./CrearDonutsAction";
+import { ADD_DONUT, LOAD_DONUTS } from "./CrearDonutsAction";
 
 
 const initialState ={
@@ -10,6 +10,11 @@ const CrearDonutsReducer = (state = initialState,action)=>{
         return{
             ...state,
             donuts: [...state.donuts, action.payload]
+        }
+    }else if(action.type === LOAD_DONUTS){
+        return {
+            ...state,
+            donuts:action.payload,
         }
     }else{
         return state

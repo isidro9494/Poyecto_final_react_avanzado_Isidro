@@ -29,10 +29,10 @@ return (
 
     {donuts && donuts.length > 0 ? (
       donuts.map((donut) => (
-        <li key={donut.id}>
+        <div key={donut.id}>
           ID: {donut.id}, Nombre: {donut.nombre}
           <button onClick={() => handleDetail(donut)}>Ver Detalles</button>
-        </li>
+        </div>
       ))
     ) : (
       <span>... loading</span>

@@ -6,7 +6,7 @@ import { getDonut } from '../core/services/listDonutFetch'
 
 
 const CreacionDonuts = () => {
-  
+ 
     const [donuts,setDonuts] = useState([])
     const [datos ,setDatos] = useState({
       nombre:"",
@@ -22,29 +22,33 @@ const CreacionDonuts = () => {
       });
   };
   const handlerSubmit = async () => {
+    if (!datos.nombre || !datos.sabor || !datos.precio) {
+        alert("Por favor, completa todos los campos.");
+        return;
+    }
+
     try {
-        const nuevosDatos = await anadirDonut(datos); // Espera la respuesta del backend
+        const nuevosDatos = await anadirDonut(datos);
         console.log("Donut añadido al backend:", nuevosDatos);
 
-        // Actualiza el estado del frontend local
-        setDonuts(prevState => [...prevState, nuevosDatos]);
-
-        // Actualiza el estado en Redux
-        dispatch(anadirDonut(nuevosDatos));
-
-        // Limpia los datos del formulario
-        setDatos({ nombre: "", sabor: "", precio: "" });
+        dispatch(anadirDonut(nuevosDatos)); // Añade el donut a Redux
+        setDatos({ nombre: "", sabor: "", precio: "" }); // Limpia el formulario
+        await loadDonutsList(); // Actualiza la lista desde el backend
     } catch (error) {
         console.error("Error al añadir el donut:", error);
+        alert("Hubo un problema al añadir el donut. Intenta de nuevo.");
     }
 };
 
-   const loadDonutsList = async () => {
-          const donutsList = await getDonut()
-          dispatch(
-              loadDonuts(donutsList)
-          )
-      }
+const loadDonutsList = async () => {
+    try {
+        const donutsList = await getDonut();
+        dispatch(loadDonuts(donutsList)); // Actualiza Redux
+    } catch (error) {
+        console.error("Error al cargar la lista de donuts:", error);
+    }
+};
+
 useEffect(() => {
     const loadDonutsList = async () => {
         const donutsList = await getDonut();

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { updateDonutOnServer } from '../core/services/listDonutFetch';
+
 import { actualizarDonut } from '../EditarDonut/EditarDonutsActions';
+import {  editarDonut } from '../../core/services/listDonutFetch';
 
 const EditarDonut = ({ donut, onCancel }) => {
     const [formData, setFormData] = useState({ ...donut });
@@ -14,21 +15,29 @@ const EditarDonut = ({ donut, onCancel }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const updatedDonut = await updateDonutOnServer(formData); // Actualiza en el backend
-        dispatch(actualizarDonut(updatedDonut)); // Actualiza en Redux
-        onCancel(); // Regresa al detalle
+        const actualizaDonut = await editarDonut(formData);
+        dispatch(actualizarDonut(actualizaDonut)); 
+        onCancel(); 
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+       <div>
             <h1>Editar Donut</h1>
             <div>
                 <label>Nombre:</label>
                 <input type="text" name="nombre" value={formData.nombre} onChange={handleInputChange}/>
             </div>
-            <button type="submit">Guardar</button>
+            <div>
+                <label>sabor:</label>
+                <input type="text" name="sabor" value={formData.sabor} onChange={handleInputChange}/>
+            </div>
+            <div>
+                <label>Precio:</label>
+                <input type="text" name="precio" value={formData.precio} onChange={handleInputChange}/>
+            </div>
+            <button type="submit" onClick={handleSubmit}>Guardar</button>
             <button type="button" onClick={onCancel}> Cancelar</button>
-        </form>
+            </div>
     );
 };
 

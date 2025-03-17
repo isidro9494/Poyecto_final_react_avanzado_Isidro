@@ -1,4 +1,4 @@
-import { anadirDonuts, getAllDonuts,eliminarDonut } from "../services/listaDonuts.js";
+import { anadirDonuts, getAllDonuts,eliminarDonut, modifyDonut, getDonutsById } from "../services/listaDonuts.js";
 
 
 
@@ -45,5 +45,32 @@ export function deleteDonutController(req, res) {
     } catch (error) {
         console.error("Error al eliminar el donut:", error);
         res.status(500).json({ error: "Error interno del servidor" });
+    }
+}
+export function modifyDonutController(req, res) {
+    try {
+        const donutId = req.params.id; 
+        const donutModified = req.body; 
+
+        const resDonutInfo = modifyDonut(donutId, donutModified);
+
+        if (resDonutInfo) {
+            res.status(200).send({ donut: resDonutInfo });
+        } else {
+            res.status(404).send({ message: "Donut no encontrado" });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ message: "Error interno del servidor" });
+    }
+}
+export async function getDonutByIdController(req, res) {
+    const { id } = req.params; 
+    const donut = await getDonutsById(id);
+
+    if (donut) {
+        res.status(200).send({ donut }); 
+    } else {
+        res.status(404).send({ message: "Donut no encontrado" }); 
     }
 }

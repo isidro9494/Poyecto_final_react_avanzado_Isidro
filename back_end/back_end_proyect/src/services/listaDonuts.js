@@ -52,3 +52,14 @@ export const eliminarDonut = (donutId) => {
   console.log("Donut eliminado correctamente:", donutAux);
   return donutAux;
 };
+export const modifyDonut = (donutId, donutModified) => {
+  const donutIndex = listaDonuts.findIndex((u) => u.id === parseInt(donutId));
+  if (donutIndex === -1) {
+      return null; 
+  }
+  listaDonuts[donutIndex] = { id: parseInt(donutId), ...donutModified };
+  return listaDonuts[donutIndex]; 
+};
+export const getDonutsById = async(id)=>{
+  return listaDonuts.find((donut)=>donut.id === parseInt(id))
+}
